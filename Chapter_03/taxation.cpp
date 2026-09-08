@@ -26,3 +26,63 @@
 // Enter the residence status: 0
 // Enter the taxable income: 4,000,000
 // Tax is 118000.
+import std;
+using namespace std;
+
+// Computes personal income tax based on Uganda's PAYE-style brackets.
+// residenceStatus: 0 = Resident, 1 = Non-resident
+double computeTax(int residenceStatus, double income) {
+    double tax = 0.0;
+
+    if (residenceStatus == 0) {
+        // Resident
+        if (income <= 2'820'000) {
+            tax = 0;
+        } else if (income <= 4'020'000) {
+            tax = (income - 2'820'000) * 0.10;
+        } else if (income <= 4'920'000) {
+            tax = (income - 4'020'000) * 0.20 + 120'000;
+        } else if (income <= 120'000'000) {
+            tax = (income - 4'920'000) * 0.30 + 300'000;
+        } else {
+            tax = (income - 4'920'000) * 0.30 + 300'000
+                  + (income - 120'000'000) * 0.10;
+        }
+    } else {
+        // Non-resident
+        if (income <= 4'020'000) {
+            tax = income * 0.10;
+        } else if (income <= 4'920'000) {
+            tax = (income - 4'020'000) * 0.20 + 402'000;
+        } else if (income <= 120'000'000) {
+            tax = (income - 4'920'000) * 0.30 + 582'000;
+        } else {
+            tax = (income - 4'920'000) * 0.30 + 582'000
+                  + (income - 120'000'000) * 0.10;
+        }
+    }
+
+    return tax;
+}
+
+int main() {
+    int residenceStatus;
+    string incomeStr;
+
+    cout << "(0-Resident, 1-Non-resident)\n";
+    cout << "Enter the residence status: ";
+    cin >> residenceStatus;
+
+    cout << "Enter the taxable income: ";
+    cin >> incomeStr;
+
+    // Strip thousand-separator commas (e.g. "4,000,000") before parsing.
+    erase(incomeStr, ',');
+    double income = stod(incomeStr);
+
+    double tax = computeTax(residenceStatus, income);
+
+    cout << "Tax is " << tax << ".\n";
+
+    return 0;
+}
