@@ -7,7 +7,7 @@ import std;
 
 using namespace std;
 
-struct Point {
+/*struct Point {
     double x;
     double y;
 };
@@ -61,6 +61,43 @@ int main() {
             if (i + 1 < pts.size()) cout << ", ";
         }
         cout << "]\n";
+    }g*/
+    // point_buffer.cpp
+
+
+int main() {
+    //centre point of interest
+    double centerX = 5.0;
+    double centerY = 5.0;
+
+    vector<double> pointsX = {1.0, 4.0, 6.0, 9.0, 5.0, 2.0, 7.5};
+    vector<double> pointsY = {2.0, 5.0, 5.5, 9.0, 5.0, 8.0, 3.0};
+
+    vector<double> bufferRadii = {2.0, 4.0, 6.0};
+
+    for (double radius : bufferRadii) {
+        cout << "Buffer radius " << radius << " around ("
+                  << centerX << ", " << centerY << "):\n";
+
+        bool foundAny = false;
+
+        for (size_t i = 0; i < pointsX.size(); ++i) {
+            double dx = pointsX[i] - centerX;
+            double dy = pointsY[i] - centerY;
+            double distance = sqrt(dx * dx + dy * dy);
+
+            if (distance <= radius) {
+                cout << "  Point (" << pointsX[i] << ", " << pointsY[i]
+                          << ") is inside  -> distance = " << distance << "\n";
+                foundAny = true;
+            }
+        }
+
+        if (!foundAny) {
+            cout << "  (no points fall inside this buffer)\n";
+        }
+
+        cout << '\n';
     }
 
     return 0;
